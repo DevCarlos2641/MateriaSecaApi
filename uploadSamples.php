@@ -1,6 +1,6 @@
 <?php
-    //require_once('./connectividad.php');
-    require_once('../DataBase/connectividad.php');
+    require_once('./connectividad.php');
+    //require_once('../DataBase/connectividad.php');
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 
@@ -16,20 +16,23 @@
     $pesos = $data->pesos;
     $muestra = $data->muestra;
 
-    $sql = "INSERT INTO muestracampo VALUES(?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO muestracampo VALUES(?, ?, ?, ?, ?, ?)";
     $stm = $conn->prepare($sql);
     $stm->execute(array(
         $muestra->id_folio,
-        $muestra->cantmuestra,
         $muestra->tipomuestreo,
         $muestra->fecha,
         $muestra->hora,
         $muestra->qr_image,
-        6
-        //$muestra->id_solicitud
+        $muestra->id_solicitud
     ));
 
     foreach($pesos as $i){
+        $nameImg = $i->imagenes;
+        //  id-hue-nameImage.jpg
+        $id_thec = explode('-', $nameImg)[0];
+        $hue = explode('-', $nameImg)[1];
+        $name = preg_replace('/^[^-]+-[^-]+-/', '', $nameImg);
         $sql = "INSERT INTO pesoscampo VALUES(?, ?, ?, ?, ?)";
         $stm = $conn->prepare($sql);
         $stm->execute(array(
@@ -37,14 +40,13 @@
             $i->id_folio,
             $i->pesosmuestra,
             $i->coordenadas,
-            "./imagenes/".$i->imagenes
+            '/images/'.$id_thec.'/'.$hue.'/'.$name
         ));
     }
-
-    $sql = "UPDATE solicitudes SET `status` = 'completed' WHERE id_solicitud = ?";
+    
+    $sql = "UPDATE solicitudes SET status = 'laboratorio' WHERE id_solicitud = ?";
     $stm = $conn->prepare($sql);
     $stm->execute(array($muestra->id_solicitud));
-
 
     echo json_encode("ok")
 

@@ -32,7 +32,9 @@
 
             // get request for technician from DB and save in to  var $solis
             $idTec = $tecnico['id_tecnico'];
-            $sql = "SELECT * FROM solicitudes WHERE id_tecnico = ? AND status != 'completed'";
+            $sql = "SELECT s.id_solicitud, s.id_hue, s.id_tecnico, s.status, s.Fecha_programada, s.motivo_cancelacion, o.cantidad 
+                    FROM solicitudes s JOIN opciones_muestras o ON s.id_opciones_muestras = o.id_opciones_muestras 
+                    WHERE s.id_tecnico = ? AND status = 'activa'";
             $stm = $conn->prepare($sql);
             $stm->execute(array($idTec));
 

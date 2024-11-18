@@ -1,7 +1,7 @@
 <?php
 
-    //require_once('./connectividad.php');
-    require_once('../DataBase/connectividad.php');
+    require_once('./connectividad.php');
+    //require_once('../DataBase/connectividad.php');
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 
@@ -14,10 +14,13 @@
 
     $data = json_decode(file_get_contents('php://input'));
 
-    $sql = "SELECT * FROM muestracampo";
+    $id = $data->id_solicitud;
+    $motivo = $data->txt;
+
+    $sql = "UPDATE solicitudes SET motivo_cancelacion = ?, status = 'cancelada' WHERE id_solicitud = ?";
     $stm = $conn->prepare($sql);
-    $stm->execute();
-    if ($stm->rowCount() > 0) {
-        echo json_encode("chi");
-    }
+    $stm->execute(array($motivo, $id));
+
+    echo json_encode("OK")
+
 ?>
