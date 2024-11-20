@@ -1,7 +1,7 @@
 <?php
 
-    require_once('./connectividad.php');
-    //require_once('../DataBase/connectividad.php');
+    //require_once('./connectividad.php');
+    require_once('../DataBase/connectividad.php');
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 

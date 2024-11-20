@@ -1,6 +1,6 @@
 <?php
-    require_once('./connectividad.php');
-    //require_once('../DataBase/connectividad.php');
+    //require_once('./connectividad.php');
+    require_once('../DataBase/connectividad.php');
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 
@@ -14,7 +14,7 @@
     $id = $_GET['id_solicitud'];
 
     $request = [];
-    $sql = "SELECT s.id_solicitud, s.id_hue, s.id_tecnico, s.status, s.Fecha_programada, s.motivo_cancelacion, o.cantidad 
+    $sql = "SELECT s.id_solicitud, s.id_hue, s.id_tecnico, s.status, s.fecha_programada, s.motivo_cancelacion, s.tipo, s.rango, o.cantidad 
                     FROM solicitudes s JOIN opciones_muestras o ON s.id_opciones_muestras = o.id_opciones_muestras 
                     WHERE s.id_tecnico = ? AND status = 'activa'";
     $stm = $conn->prepare($sql);
