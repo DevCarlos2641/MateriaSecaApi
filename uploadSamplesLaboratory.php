@@ -16,6 +16,16 @@
     $sample = $data->sample;
     $weights = $data->weights;
     $id_solicitud = $data->id_solicitud;
+    $newFolio = $data->newFolio;
+
+    if($newFolio != ""){
+        $sample->id_folio = $newFolio;
+        $sql = "INSERT INTO muestracampo VALUES(?, ?, ?, ?, ?)";
+        $stm = $conn->prepare($sql);
+        $stm->execute(array(
+            $newFolio, null, $sample->fecha_final, null, $id_solicitud
+        ));
+    }
 
     $sql = "INSERT INTO muestralaboratorio VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stm = $conn->prepare($sql);
@@ -46,7 +56,7 @@
         $stm->execute(array(
             $i->id_pesolaboratorio,
             $idM,
-            $i->id_folio,
+            $sample->id_folio,
             $i->pesosmuestra,
             $i->pesopapel,
             $i->pesopapelpulpa,
