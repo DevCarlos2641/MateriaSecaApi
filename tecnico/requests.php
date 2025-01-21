@@ -1,17 +1,6 @@
 <?php
 
-   function getData($id): array{
-      //require_once('./connectividad.php');
-      require_once('../DataBase/connectividad.php');
-      $conexion = new DB_Connect();
-      $conn = $conexion->connect();
-
-      // Verificar la conexión a la base de datos
-      if ($conn->errorCode() !== "00000") {
-         // Manejo del error de conexión aquí
-         $errorInfo = $conn->errorInfo();
-         die("Conexión fallida: " . implode(", ", $errorInfo));
-      }
+   function getData($id, $conn): array{
 
       $request = [];
       $sql = "SELECT s.id_solicitud, s.id_hue, s.id_tecnico, s.status, s.fecha_programada, s.motivo_cancelacion, s.tipo, s.rango, o.cantidad,
@@ -28,8 +17,8 @@
       $huertas = [];
       foreach($request as $value){
          $val = $value['id_hue'];
-         if($val != null) array_push($huertas, getOrchardsByHue($val));
-         else array_push($huertas, getOrchardsByFolio($value['id_folio']));
+         if($val != null) array_push($huertas, getOrchardsByHue($val, $conn));
+         else array_push($huertas, getOrchardsByFolio($value['id_folio'], $conn));
       }
       
       $juntas = [];
@@ -53,8 +42,7 @@
      );
    }
 
-   function getOrchardsByHue($hue){
-      global $conn;
+   function getOrchardsByHue($hue, $conn){
       $sql = "SELECT t.*, t.id_hue as id FROM (SELECT * FROM huertas WHERE id_hue = ?) t";
       $stm = $conn->prepare($sql);
       $stm->execute(array($hue));
@@ -64,8 +52,7 @@
       return $huerta;
   }
 
-   function getOrchardsByFolio($fol){
-      global $conn;
+   function getOrchardsByFolio($fol, $conn){
       $sql = "SELECT t.*, t.id_folio as id FROM (SELECT * FROM huertas_foliadas WHERE id_folio = ?) t";
       $stm = $conn->prepare($sql);
       $stm->execute(array($fol));

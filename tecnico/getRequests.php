@@ -1,7 +1,7 @@
 <?php
-    //require_once('./connectividad.php');
-    require_once('../DataBase/connectividad.php');
+    require_once('../connectividad.php');
     require_once('requests.php');
+
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 
@@ -13,7 +13,7 @@
     }
 
     $id = $_GET['id_tecnico'];
-    $data = getData($id);
+    $data = getData($id, $conn);
 
 
     echo json_encode($data);

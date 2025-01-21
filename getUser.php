@@ -1,7 +1,7 @@
 <?php
-    //require_once('./connectividad.php');
-    require_once('../DataBase/connectividad.php');
-    require_once('requests.php');
+    require_once('./connectividad.php');
+    require_once('tecnico/requests.php');
+    
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 
@@ -14,13 +14,20 @@
 
     $data = json_decode(file_get_contents('php://input'));
 
-    $sql = "SELECT * FROM usuario WHERE correo = ? && contraseña = ?";
+    $sql = "SELECT * FROM usuario WHERE correo = ?";
     $stm = $conn->prepare($sql);
-    $stm->execute(array($data->email, $data->password));
+    $stm->execute(array($data->email));
     $options = [];
     // Verificar si hay resultados
     if ($stm->rowCount() > 0) {
         $usuario = $stm->fetch(PDO::FETCH_ASSOC);
+
+        if(!password_verify($data->password, $usuario['contraseña'])){
+            $options = array('status' => 'error', 'usuario' => null);
+            echo json_encode($options);
+            die();
+        }
+
         $idTipo = $usuario['id_tipo'];
         $idUser = $usuario['id_usuario'];
         if($idTipo == 2){
@@ -31,7 +38,7 @@
             $tecnico = $stm->fetch(PDO::FETCH_ASSOC);
 
             // get request for technician from DB and save in to  var $solis
-            $data = getData($tecnico['id_tecnico']);
+            $data = getData($tecnico['id_tecnico'], $conn);
 
             $options = array('status'=>'ok', 'usuario'=>$usuario, 
                         "tecnico"=>$tecnico, "solicitudes"=>$data['solicitudes'],

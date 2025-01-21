@@ -12,7 +12,7 @@
         verifiedDirHue($id, $hue);
 
         foreach ($files['name'] as $key => $name) {
-            $target_dir = './images/';
+            $target_dir = '../images/';
             $tmp_name = $files['tmp_name'][$key];
             $size = $files['size'][$key];
             $error = $files['error'][$key];
@@ -38,21 +38,21 @@
     }
 
     function verifiedDirId($id){
-        $dir = './images/'.$id;
+        $dir = '../images/'.$id;
         if (!is_dir($dir))
             mkdir($dir, 0777, true);
         return true;
     }
 
     function verifiedDirHue($id, $hue){
-        $dir = './images/'.$id.'/'.$hue;
+        $dir = '../images/'.$id.'/'.$hue;
         if (!is_dir($dir))
             mkdir($dir, 0777, true);
         return true;
     }
 
     function verifiedDirImages(){
-        $dir = './images';
+        $dir = '../images';
         if (!is_dir($dir))
             mkdir($dir, 0777, true);
         return true;

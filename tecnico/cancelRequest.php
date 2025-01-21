@@ -1,7 +1,7 @@
 <?php
 
-    //require_once('./connectividad.php');
-    require_once('../DataBase/connectividad.php');
+    require_once('../connectividad.php');
+    
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 
@@ -17,9 +17,11 @@
     $id = $data->id_solicitud;
     $motivo = $data->txt;
 
-    $sql = "UPDATE solicitudes SET motivo_cancelacion = ?, status = 'cancelada' WHERE id_solicitud = ?";
+    date_default_timezone_set("America/Mexico_City");
+    $fechaActual = date("Y/m/d");
+    $sql = "UPDATE solicitudes SET motivo_cancelacion = ?, status = 'cancelada', fecha_fin = ? WHERE id_solicitud = ?";
     $stm = $conn->prepare($sql);
-    $stm->execute(array($motivo, $id));
+    $stm->execute(array($motivo, $fechaActual, $id));
 
     echo json_encode("OK")
 

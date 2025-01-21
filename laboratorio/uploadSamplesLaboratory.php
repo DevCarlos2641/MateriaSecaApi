@@ -1,7 +1,7 @@
 <?php
 
-    //require_once('./connectividad.php');
-    require_once('../DataBase/connectividad.php');
+    require_once('../connectividad.php');
+
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 
@@ -69,9 +69,11 @@
         ));
     }
 
-    $sql = "UPDATE solicitudes SET status = 'finalizado' WHERE id_solicitud = ?";
+    date_default_timezone_set("America/Mexico_City");
+    $fechaActual = date("Y/m/d");
+    $sql = "UPDATE solicitudes SET status = 'finalizado', fecha_fin = ? WHERE id_solicitud = ?";
     $stm = $conn->prepare($sql);
-    $stm->execute(array($id_solicitud));
+    $stm->execute(array($fechaActual, $id_solicitud));
 
     echo json_encode("ok");
 

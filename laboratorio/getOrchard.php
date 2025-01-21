@@ -1,7 +1,7 @@
 <?php
 
-    //require_once('./connectividad.php');
-    require_once('../DataBase/connectividad.php');
+    require_once('../connectividad.php');
+    
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 
@@ -24,7 +24,7 @@
     $req = $stm->fetch(PDO::FETCH_ASSOC);
 
     if($req){
-        if($req['status'] == "laboratorio"){
+        if($req['status'] == "laboratorio" && $req["tipo"] == "exportacion"){
             $orchard;
             $val = $req['id_hue'];
             if($val != null) $orchard = getOrchardsByHue($val);

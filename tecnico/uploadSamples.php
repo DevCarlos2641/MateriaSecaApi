@@ -1,6 +1,7 @@
 <?php
-    //require_once('./connectividad.php');
-    require_once('../DataBase/connectividad.php');
+    
+    require_once('../connectividad.php');
+    
     $conexion = new DB_Connect();
     $conn = $conexion->connect();
 
@@ -43,7 +44,6 @@
             $i->observaciones
         ));
     }
-    
     $sql = "UPDATE solicitudes SET status = 'laboratorio' WHERE id_solicitud = ?";
     $stm = $conn->prepare($sql);
     $stm->execute(array($muestra->id_solicitud));
