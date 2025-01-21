@@ -31,7 +31,13 @@
             else $orchard = getOrchardsByFolio($req['id_folio']);
             echo json_encode(array("orchard"=>$orchard, "request"=>$req));
 
-        } else echo http_response_code(500);
+        } else if($req["status"] == "activa" && $req["tipo"] == "nacional"){
+            $orchard;
+            $val = $req['id_hue'];
+            if($val != null) $orchard = getOrchardsByHue($val);
+            else $orchard = getOrchardsByFolio($req['id_folio']);
+            echo json_encode(array("orchard"=>$orchard, "request"=>$req));
+        } else echo http_response_code(404);
 
     } else echo http_response_code(404);
 

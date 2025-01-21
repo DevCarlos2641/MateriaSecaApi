@@ -27,7 +27,7 @@
         ));
     }
 
-    $sql = "INSERT INTO muestralaboratorio VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO muestralaboratorio VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stm = $conn->prepare($sql);
     $stm->execute(array(
         $sample->id_muestralaboratorio,
@@ -39,7 +39,9 @@
         $sample->rutaReporte,
         $sample->promedio_muestreo,
         $sample->desv_estandar,
-        $sample->procentaje_cv
+        $sample->procentaje_cv,
+        $sample->id_bascula,
+        $sample->id_microondas
     ));
 
     $sql = "SELECT * FROM muestralaboratorio WHERE id_folio = ?";
